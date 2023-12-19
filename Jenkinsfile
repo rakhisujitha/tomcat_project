@@ -1,26 +1,47 @@
+
 pipeline {
     agent any
+    tools{
+        maven "Maven_Home"
+    }
+    parameters {
+       choice choices: ['Mumbai', 'Virginia', 'Ohio'], description: 'choose the your region', name: 'Region'
+    }
 
     stages {
-        stage('clone from github') {
+        stage('git clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/mohammedashiqu/jenkins_tomcat_jacoco_project.git'
+               git branch: 'main', url: 'https://github.com/rakhisujitha/tomcat_project.git'
             }
         }
-        stage('build war file') {
+        stage('Build'){
             steps {
-                sh "mvn clean install package"
+                script {
+                   if (params.Region == 'Ohio') {
+                       sh 'mvn clean install'
+                    } else if (params.Region == 'Mumbai') {
+                         sh 'mvn clean install'
+                    } else if (params.Region == 'Virginia') {
+                         sh 'mvn clean install'
+                    }
+                }
             }
         }
-        stage('jacoco test') {
+        stage('Test'){
             steps {
-                jacoco()
+                sh 'mvn test'
             }
         }
-        stage('deploy to tomcat') {
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://65.0.205.121:8080')], contextPath: 'webapp', war: '**/*.war'
+    }
+    post{
+        success{
+            echo 'Build and test successful! Deploying...'
+            script{
+                sh 'sudo scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/pipeline/webapp/target/webapp.war root@10.0.3.86:/var/lib/tomcat9/webapps'
             }
+        }
+        failure{
+            echo 'Build or test failed. Deployment aborted.'
         }
     }
 }
