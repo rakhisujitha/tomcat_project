@@ -5,7 +5,7 @@ pipeline {
         maven "Maven_Home"
     }
     parameters {
-       choice choices: ['Mumbai', 'Virginia', 'Ohio'], description: 'choose the your region', name: 'Region'
+       choice choices: ['Mumbai', 'Virginia', 'Ohio'], description: 'Choose the your Region', name: 'Region'
     }
 
     stages {
