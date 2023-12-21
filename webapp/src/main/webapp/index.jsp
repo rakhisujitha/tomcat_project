@@ -53,7 +53,7 @@ body, html {
 <div class="bg-image"></div>
 
 <div class="bg-text">
-  <h1 style="font-size:50px">$Aws-secret</h1>
+  <h1 style="font-size:50px">$Aws-secrets from secret manager</h1>
 </div>
 
 </body>
