@@ -5,7 +5,7 @@ pipeline {
         maven "Maven_Home"
     }
     parameters {
-       choice choices: ['Mumbai', 'Virginia', 'Ohio'], description: 'Choose the your Region', name: 'Region'
+       choice choices: ['Mumbai', 'Virginia', 'Ohio'], description: 'Choose the your Region', name: 'region'
     }
 
     stages {
@@ -17,11 +17,11 @@ pipeline {
         stage('Build'){
             steps {
                 script {
-                   if (params.Region == 'Ohio') {
+                   if (params.region == 'Ohio') {
                        sh 'mvn clean install'
-                    } else if (params.Region == 'Mumbai') {
+                    } else if (params.region == 'Mumbai') {
                          sh 'mvn clean install'
-                    } else if (params.Region == 'Virginia') {
+                    } else if (params.region == 'Virginia') {
                          sh 'mvn clean install'
                     }
                 }
